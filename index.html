@@ -10,7 +10,8 @@
 
       //recebe o valor "sensorLuz" enviado pelo node.js
       socket.on('eixoX', function(valor){
-          $("#X").text(valor); //escreve o "valor" que é passado na função no id #luz
+        console.log(valor) 
+        $("#X").text(valor); //escreve o "valor" que é passado na função no id #luz
       });
       socket.on('eixoY', function(valor){
           $("#Y").text(valor); //escreve o "valor" que é passado na função no id #luz

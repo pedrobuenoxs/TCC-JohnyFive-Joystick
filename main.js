@@ -8,6 +8,18 @@ const port = process.env.PORT;
 const five = require("johnny-five");
 const arduino = new five.Board();
 
+function action(x, y) {
+  if (y < 0) {
+    if (y < -0.3) return "Forward";
+  } else {
+    if (y > 0.3) return "Backward";
+  }
+  if (x < 0) {
+    if (x < -0.3) return "To Right";
+  } else {
+    if (x > 0.3) return "To Left";
+  }
+}
 arduino.on("ready", function () {
   console.log("Arduino Pronto");
 
@@ -18,7 +30,7 @@ arduino.on("ready", function () {
   });
 
   accelerometer.on("change", function () {
-    io.emit("eixoX", this.x);
+    io.emit("eixoX", action(this.x, this.y));
     io.emit("eixoY", this.y);
     console.log(`eixoX:: ${this.x}`, `eixoY::${this.y}`);
   });
