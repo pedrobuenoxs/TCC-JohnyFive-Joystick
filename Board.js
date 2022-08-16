@@ -1,4 +1,3 @@
-var five = require("johnny-five");
 class ArduinoBoard {
   constructor(board, accelerometer) {
     this.board = new board();
@@ -12,7 +11,7 @@ class ArduinoBoard {
     this.board.on("ready", () => {
       const accelerometer = new this.accelerometer({
         controller: "MPU6050",
-        sesivity: 16384, // optional
+        sensitivity: 16384, // optional
       });
 
       accelerometer.on("change", () => {
