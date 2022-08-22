@@ -1,21 +1,28 @@
-const app = require("express")();
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
-const accelerometer = require("./main.js");
+const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const accelerometer = require("./app/arduino/index.js");
+const path = require("path");
+io.on(
+  "connection",
+  (socket) => {
+    setInterval(() => {
+      console.log(
+        `X:${accelerometer.imuX} Y:${accelerometer.imuY} Z:${accelerometer.imuZ}`
+      );
+      socket.emit("imu", {
+        imuX: accelerometer.imuX * 1.5,
+        imuY: accelerometer.imuY * 1.5,
+        imuZ: accelerometer.imuZ * 1.5,
+      });
+    });
+  },
+  20
+);
 
-setInterval(() => {
-  console.log(
-    `X: ${accelerometer.imuX} Y: ${accelerometer.imuY} Z: ${accelerometer.imuZ}`
-  );
-}, 1);
+app.use(express.static(path.join(__dirname, "/app/")));
 
-app.get("/", function (req, res) {
-  res.sendfile("index.html");
-});
-io.sockets.on("connection", (socket) => {
-  socket.emit("hello", "world");
-});
-
-http.listen(3000, function () {
+server.listen(8000, function () {
   console.log("listening on *:3000");
 });

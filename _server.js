@@ -19,15 +19,31 @@ const arduino = new five.Board();
 arduino.on("ready", () => {
   const accelerometer = new five.Accelerometer({
     controller: "MPU6050",
-    sensitivity: 16384, // optional
+    sensitivity: 96, // optional
   });
   accelerometer.on("change", () => {
     const { x, y, z } = accelerometer;
-    // console.log(`X: ${x} Y: ${y} Z: ${z}`);
+    const { acceleration, inclination, orientation, pitch, roll } =
+      accelerometer;
+    // console.log(`
+    //   acceleration: ${acceleration}
+    //     inclination: ${inclination}
+    //     orientation: ${orientation}
+    //   pitch: ${pitch}`);
+    // console.log(
+    //   `X: ${Math.floor((x * Math.PI) / 2)} Y: ${Math.floor(
+    //     (y * Maths.PI) / 2
+    //   )} Z: ${Math.floor((z * Math.PI) / 2)}`
+    // );
+    // console.log(
+    //   `X: ${Math.floor(((x * Math.PI) / 360) * 100) / 100} Y: ${
+    //     Math.floor(((y * Math.PI) / 180) * 100) / 100
+    //   } Z: ${Math.floor(((z * Math.PI) / 180) * 100) / 100}`
+    // );
     io.emit("imu", {
-      imuX: x,
-      imuY: y,
-      imuZ: z,
+      imuX: Math.floor(((x * Math.PI) / 360) * 100) / 100,
+      imuY: Math.floor(((y * Math.PI) / 360) * 100) / 100,
+      imuZ: Math.floor(((z * Math.PI) / 360) * 100) / 100,
     });
   });
 });
