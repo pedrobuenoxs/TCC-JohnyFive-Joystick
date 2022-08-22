@@ -11,6 +11,7 @@ class ArduinoBoard {
     this.board.on("ready", () => {
       const accelerometer = new this.accelerometer({
         controller: "MPU6050",
+        sensitivity: 115200,
       });
 
       accelerometer.on("change", () => {

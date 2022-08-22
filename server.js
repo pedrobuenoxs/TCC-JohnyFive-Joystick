@@ -4,6 +4,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const accelerometer = require("./app/arduino/index.js");
 const path = require("path");
+
 io.on(
   "connection",
   (socket) => {
